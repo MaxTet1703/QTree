@@ -120,9 +120,11 @@ class QTree:
 
         self.root = QuadNode(image, image.getbbox(), 0)
         self.width, self.height = image.size
+
         if max_depth is None:
-            self.max_depth = 1024
-        self.build(image, self.root, max_depth)
+            self.max_depth = 0
+        self.max_depth = max_depth
+        self.build(image, self.root, self.max_depth)
 
     def build(self, image, node, max_depth):
 
@@ -212,6 +214,18 @@ class QTree:
             box = (left, top, right, bottom)
             draw.rectangle(box, node.color)
         return image
+
+    def save_image(self, filename):
+
+        """
+        Сохранение сжатой фотографии
+
+        :param filename: Путь, по которому сохранится сжатое изображение
+        :return:
+        """
+
+        image = self.create_image(self.max_depth)
+        image.save(filename)
 
     def create_gif(self, file_name, duration=1000, loop=0):
 
